@@ -1,0 +1,38 @@
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore environment files
+.env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Ignore PyCharm project files
+.idea/
+
+# Ignore VSCode project files
+.vscode/
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore logs
+*.log
+
+# Ignore database files
+*.sqlite3
+
+# Ignore aiogram data files
+*.session
+*.session-journal
+
+# Ignore other unnecessary files
+*.bak
+*.tmp
+*.swp
+
