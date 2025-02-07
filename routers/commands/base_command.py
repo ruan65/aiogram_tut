@@ -3,7 +3,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.utils import markdown as m
 from aiogram.enums import ParseMode
 
-router = Router()
+router = Router(name=__name__)
 
 
 @router.message(CommandStart())
