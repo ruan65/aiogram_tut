@@ -9,6 +9,8 @@ from aiogram.enums import ParseMode
 from aiogram.enums import ParseMode, ChatAction
 from aiogram.utils.chat_action import ChatActionSender
 
+from keyboards.actions_keyboards import actions_kb
+
 router = Router(name=__name__)
 
 
@@ -114,4 +116,12 @@ async def handle_command_csv(message: types.Message):
             file=file.getvalue().encode("utf-8"),
             filename="peope.csv",
         )
+    )
+
+
+@router.message(Command("actions", prefix="!,/"))
+async def handle_action(message: types.Message):
+    await message.answer(
+        text="Choose action",
+        reply_markup=actions_kb("random number"),
     )

@@ -2,8 +2,8 @@ from aiogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
+from .actions_keyboards import rnd_num_updated_callback_data
 
-rnd_callback_data = "rnd_callback_data"
 rnd_callback_dice = "rnd_callback_dice"
 rnd_callback_modal = "rnd_callback_modal"
 
@@ -18,8 +18,8 @@ def _info_markup() -> InlineKeyboardMarkup:
         url="https://t.me/quizarium",
     )
     btn_random_bot_start = InlineKeyboardButton(
-        text="🤖 Random bot start",
-        callback_data=rnd_callback_data,
+        text="🤖 Random number message",
+        callback_data=rnd_num_updated_callback_data,
     )
     btn_random_dice = InlineKeyboardButton(
         text="🎲 Random bot dice",

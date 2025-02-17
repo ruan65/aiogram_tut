@@ -2,21 +2,11 @@ from random import randint
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from keyboards.inline_keyboards import (
-    rnd_callback_data,
     rnd_callback_dice,
     rnd_callback_modal,
 )
 
 router = Router(name=__name__)
-
-
-@router.callback_query(F.data == rnd_callback_data)
-async def handle_random_site(callback_query: CallbackQuery):
-    bot_me = await callback_query.bot.get_me()
-
-    await callback_query.answer(
-        url=f"t.me/{bot_me.username}?start={randint(1, 100)}",
-    )
 
 
 @router.callback_query(F.data == rnd_callback_dice)

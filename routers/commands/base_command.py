@@ -15,7 +15,6 @@ router = Router(name=__name__)
 
 @router.message(CommandStart())
 async def handle_start(message: types.Message):
-    print("command text:", repr(message.text))
     await message.answer(
         f"Hello and welcome <b>{message.from_user.full_name} {message.from_user.id}</b>, ! I'm a bot! Please, send me a message or a sticker",
         parse_mode=ParseMode.HTML,
