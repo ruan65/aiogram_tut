@@ -4,13 +4,27 @@ from aiogram import Router, types, F
 from aiogram.filters import CommandStart, Command
 from aiogram.utils import markdown as m
 from aiogram.enums import ChatAction
+from aiogram.types import ReplyKeyboardRemove
+
+from keyboards.common_keyboards import ButtonName
 
 
 router = Router(name=__name__)
 
 
+@router.message(F.text == ButtonName.CANCEL)
+async def handle_cancel(message: types.Message):
+    await message.answer(
+        text="See you later!, Click /start to start again",
+        reply_markup=ReplyKeyboardRemove(),
+    )
+
+
 @router.message()
 async def echo(message: types.Message):
+    if message.poll:
+        await message.forward(chat_id=message.chat.id)
+        return
     await message.bot.send_message(
         chat_id=message.chat.id,
         text="Start processing...",
@@ -33,17 +47,7 @@ async def echo(message: types.Message):
         )
         await asyncio.sleep(4)
 
-    # if message.text:
-    # await message.answer(text=message.text, entities=message.entities)
-
     try:
         await message.send_copy(chat_id=message.chat.id)
     except TypeError:
         await message.reply(text="Somehting new has been detected")
-    # if message.text:
-    #     await message.reply(text=message.text)
-    # elif message.sticker:
-    #     await message.reply_sticker(sticker=message.sticker.file_id)
-
-    # else:
-    #     await message.reply(text="Somehting new has been detected")
