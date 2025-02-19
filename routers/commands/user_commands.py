@@ -10,6 +10,7 @@ from aiogram.enums import ParseMode, ChatAction
 from aiogram.utils.chat_action import ChatActionSender
 
 from keyboards.actions_keyboards import actions_kb
+from keyboards.shop_keyboards import build_shop_keyboard
 
 router = Router(name=__name__)
 
@@ -124,4 +125,12 @@ async def handle_action(message: types.Message):
     await message.answer(
         text="Choose action",
         reply_markup=actions_kb("random number"),
+    )
+
+
+@router.message(Command("shop", prefix="!,/"))
+async def handle_shop(message: types.Message):
+    await message.answer(
+        text="Choose shopping action",
+        reply_markup=build_shop_keyboard(),
     )

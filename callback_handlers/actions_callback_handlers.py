@@ -19,6 +19,20 @@ async def handle_random_number_edited(callback_query: CallbackQuery):
     )
 
 
+@router.callback_query(
+    FixedRandomNumCallbackData.filter(
+        F.number == 48,
+    )
+)
+async def handle_random_number(
+    callback_query: CallbackQuery,
+):
+    await callback_query.answer(
+        text=("Jackpot!!! 🎰 "),
+        cache_time=30,
+    )
+
+
 @router.callback_query(FixedRandomNumCallbackData.filter())
 async def handle_random_number(
     callback_query: CallbackQuery,
