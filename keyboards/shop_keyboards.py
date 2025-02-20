@@ -71,3 +71,32 @@ def build_product_keyboard():
     )
     builder.adjust(1)
     return builder.as_markup()
+
+
+def build_product_details_keyboard(
+    product_callback_data: ProductCallbackData,
+) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+
+    builder.button(
+        text="Back to products",
+        callback_data=ShopCallbackData(action=ShopActions.products).pack(),
+    )
+    builder.button(
+        text="Update product",
+        callback_data=ProductCallbackData(
+            action=ProductActions.update,
+            id=product_callback_data.id,
+            title=product_callback_data.title,
+            price=product_callback_data.price,
+        ).pack(),
+    )
+    builder.button(
+        text="Delete product",
+        callback_data=ProductCallbackData(
+            action=ProductActions.delete,
+            **product_callback_data.model_dump(include={"id", "title", "price"}),
+        ),
+    )
+    builder.adjust(1, 2)
+    return builder.as_markup()

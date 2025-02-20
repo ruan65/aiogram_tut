@@ -1,8 +1,12 @@
 from aiogram import F, Router
 from aiogram.types import CallbackQuery
+from aiogram.utils import markdown
 from keyboards.shop_keyboards import (
+    ProductActions,
+    ProductCallbackData,
     ShopActions,
     ShopCallbackData,
+    build_product_details_keyboard,
     build_product_keyboard,
     build_shop_keyboard,
 )
@@ -39,4 +43,30 @@ async def handle_root(callback: CallbackQuery):
     await callback.message.edit_text(
         text="Choose shopping action",
         reply_markup=build_shop_keyboard(),
+    )
+
+
+@router.callback_query(
+    ProductCallbackData.filter(F.action == ProductActions.details),
+)
+async def handle_product_details(
+    callback: CallbackQuery,
+    callback_data: ProductCallbackData,
+):
+    await callback.answer()
+    message_text = markdown.text(
+        markdown.text(
+            markdown.hbold("Title:"),
+            callback_data.title,
+        ),
+        markdown.text(
+            markdown.hbold("Price:"),
+            callback_data.price,
+        ),
+        sep="\n",
+    )
+    await callback.message.edit_text(
+        text=message_text,
+        reply_markup=build_product_details_keyboard(callback_data),
+        parse_mode="HTML",
     )
