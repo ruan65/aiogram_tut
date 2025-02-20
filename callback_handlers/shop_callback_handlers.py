@@ -8,6 +8,7 @@ from keyboards.shop_keyboards import (
     ShopCallbackData,
     build_product_details_keyboard,
     build_product_keyboard,
+    build_product_update_keyboard,
     build_shop_keyboard,
 )
 
@@ -70,3 +71,26 @@ async def handle_product_details(
         reply_markup=build_product_details_keyboard(callback_data),
         parse_mode="HTML",
     )
+
+
+@router.callback_query(
+    ProductCallbackData.filter(F.action == ProductActions.update),
+)
+async def handle_update_product(
+    callback: CallbackQuery,
+    callback_data: ProductCallbackData,
+):
+    await callback.answer()
+    await callback.message.edit_reply_markup(
+        reply_markup=build_product_update_keyboard(callback_data),
+    )
+
+
+@router.callback_query(
+    ProductCallbackData.filter(F.action == ProductActions.delete),
+)
+async def handle_delete_product(
+    callback: CallbackQuery,
+    callback_data: ProductCallbackData,
+):
+    await callback.answer("delete is in progress")

@@ -1,4 +1,5 @@
 from ast import In
+from calendar import c
 from enum import IntEnum, auto
 from logging import root
 from operator import add
@@ -99,4 +100,23 @@ def build_product_details_keyboard(
         ),
     )
     builder.adjust(1, 2)
+    return builder.as_markup()
+
+
+def build_product_update_keyboard(
+    product_callback_data: ProductCallbackData,
+) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.button(
+        text=f"️⬅️ Back to {product_callback_data.title}",
+        callback_data=ProductCallbackData(
+            action=ProductActions.details,
+            **product_callback_data.model_dump(include={"id", "title", "price"}),
+        ),
+    )
+    builder.button(
+        text="✍️ Update product",
+        callback_data=ShopCallbackData(action=ShopActions.products).pack(),
+    )
+    builder.adjust(1)
     return builder.as_markup()
