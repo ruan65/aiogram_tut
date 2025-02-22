@@ -1,16 +1,11 @@
 import email
 from aiogram.types import Message
-
-
-def valid_email(value: str) -> str:
-    if "@" not in value or "." not in value:
-        raise ValueError("Invalid email")
-    return value.lower()
+from email_validator import EmailNotValidError, validate_email
 
 
 def valid_email_filter(message: Message) -> str | None:
     try:
-        email = valid_email(message.text)
-    except ValueError:
+        email = validate_email(message.text)
+    except EmailNotValidError:
         return None
-    return {"email": email}
+    return {"email": email.normalized}

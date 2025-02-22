@@ -65,6 +65,13 @@ def _actions_markup() -> ReplyKeyboardMarkup:
     )
 
 
+def build_yes_no_keyboard():
+    builder = ReplyKeyboardBuilder()
+    builder.button(text="Yes")
+    builder.button(text="No")
+    return builder.as_markup(resize_keyboard=True)
+
+
 start_markup = _start_markup()
 help_markup = _help_markup()
 actions_markup = _actions_markup()

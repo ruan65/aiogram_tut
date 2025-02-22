@@ -1,10 +1,11 @@
 from aiogram import Router
 from aiogram.filters import Command
-from aiogram.types import Message
+from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils import markdown
 from aiogram.fsm.context import FSMContext
 from magic_filter import F
 
+from keyboards.common_keyboards import build_yes_no_keyboard
 from routers.survey.email_validater import valid_email_filter
 from routers.survey.states import Survey
 
@@ -26,6 +27,7 @@ async def handle_user_full_name(message: Message, state: FSMContext):
     await state.set_state(Survey.email)
     await message.answer(
         text=f"Your name is {markdown.hbold(message.text)}\nPlease enter your email",
+        reply_markup=ReplyKeyboardRemove(),
     )
 
 
@@ -36,9 +38,39 @@ async def handle_user_email(
     email: str,
 ):
     await state.update_data(email=message.text)
-    # await state.set_state(Survey.email)
+    await state.set_state(Survey.email_newsletter)
     await message.answer(
-        text=f"Your email is {markdown.hbold(email)}",
+        text=(
+            f"Your email is {markdown.hbold(email)}"
+            "\nDo you want to receive newsletter?"
+        ),
+        reply_markup=build_yes_no_keyboard(),
+    )
+
+
+@router.message(Survey.email_newsletter, F.text.casefold() == "yes")
+async def handle_user_email_newsletter(message: Message, state: FSMContext):
+    await state.update_data(email_newsletter=True)
+    await message.answer(
+        text="Thanks for subscribing to our newsletter",
+    )
+
+
+@router.message(Survey.email_newsletter, F.text.casefold() == "no")
+async def handle_user_email_newsletter_not_ok(message: Message, state: FSMContext):
+    await state.update_data(email_newsletter=False)
+    await message.answer(
+        text="Shame on you",
+    )
+
+
+@router.message(Survey.email_newsletter)
+async def handle_user_email_newsletter_unknown(message: Message):
+    await message.answer(
+        text=(
+            "Sorry, I don't understand, "
+            f"send {markdown.hcode('yes')} or {markdown.hcode('no')}"
+        ),
     )
 
 
