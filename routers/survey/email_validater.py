@@ -9,3 +9,15 @@ def valid_email_filter(message: Message) -> str | None:
     except EmailNotValidError:
         return None
     return {"email": email.normalized}
+
+
+# def valid_email(input: str) -> str | None:
+#     try:
+#         email = validate_email(input)
+#     except EmailNotValidError:
+#         return None
+#     return email.normalized
+
+
+# def valid_email_or_none(message: Message) -> str | None:
+#     return valid_email(message.text)
