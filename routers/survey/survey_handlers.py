@@ -3,7 +3,8 @@ from aiogram.filters import Command
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils import markdown
 from aiogram.fsm.context import FSMContext
-from magic_filter import F
+from aiogram import F
+from email_validator import EmailNotValidError, validate_email
 
 from keyboards.common_keyboards import build_yes_no_keyboard
 from routers.survey.email_validater import (
@@ -38,15 +39,16 @@ async def handle_user_full_name(message: Message, state: FSMContext):
 
 @router.message(
     Survey.email,
-    valid_email_filter,
+    # valid_email_filter,
     # F.func(valid_email_or_none).as_("email"),
-    # F.text.cast(validate_email).normalized.as_("email"),
+    F.text.cast(validate_email).normalized.as_("email"),
 )
 async def handle_user_email(
     message: Message,
     state: FSMContext,
     email: str,
 ):
+    print(f"valid email: {F.text.cast(validate_email).normalized}")
     await state.update_data(email=email)
     await state.set_state(Survey.email_newsletter)
     await message.answer(
