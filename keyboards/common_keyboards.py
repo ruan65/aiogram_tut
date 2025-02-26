@@ -1,3 +1,4 @@
+from typing import Iterable
 from aiogram.types import (
     ReplyKeyboardMarkup,
     KeyboardButton,
@@ -69,6 +70,14 @@ def build_yes_no_keyboard():
     builder = ReplyKeyboardBuilder()
     builder.button(text="Yes")
     builder.button(text="No")
+    return builder.as_markup(resize_keyboard=True)
+
+
+def build_select_keyboard(options: Iterable[str]) -> ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+    for option in options:
+        builder.button(text=option)
+    builder.adjust(1)
     return builder.as_markup(resize_keyboard=True)
 
 
