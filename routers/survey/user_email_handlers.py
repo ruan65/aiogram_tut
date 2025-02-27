@@ -4,8 +4,8 @@ from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.fsm.context import FSMContext
 from email_validator import EmailNotValidError, validate_email
 
-from keyboards.common_keyboards import build_yes_no_keyboard
-from routers.survey.states import Survey
+from keyboards.common_keyboards import build_select_keyboard, build_yes_no_keyboard
+from routers.survey.states import Sports, Survey
 
 
 router = Router(name=__name__)
@@ -26,11 +26,8 @@ async def handle_user_email(
     await state.update_data(email=email)
     await state.set_state(Survey.sport)
     await message.answer(
-        text=(
-            f"Your email is {markdown.hcode(email)}"
-            "\nDo you want to receive newsletter?"
-        ),
-        reply_markup=build_yes_no_keyboard(),
+        text=(f"Your email is {markdown.hcode(email)}\nWhat sport do you prefer?"),
+        reply_markup=build_select_keyboard(Sports),
     )
 
 

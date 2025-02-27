@@ -77,7 +77,7 @@ def build_select_keyboard(options: Iterable[str]) -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     for option in options:
         builder.button(text=option)
-    builder.adjust(1)
+    builder.adjust(2)
     return builder.as_markup(resize_keyboard=True)
 
 
