@@ -1,6 +1,6 @@
 import logging
 from aiogram import Router
-from aiogram.filters import Command
+from aiogram.filters import Command, StateFilter
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils import markdown
 from aiogram.fsm.context import FSMContext
@@ -15,7 +15,7 @@ from routers.survey.email_validater import (
     # valid_email,
 )
 from email_validator import EmailNotValidError, validate_email
-from routers.survey.states import Survey
+from routers.survey.states import Survey, SurveySportDetails
 
 router = Router(name=__name__)
 
@@ -31,19 +31,16 @@ async def start_survey(message: Message, state: FSMContext):
     )
 
 
-@router.message(Command("cancel"), Survey())
-@router.message(F.text.casefold() == "cancel", Survey())
+survey_states = StateFilter(Survey(), SurveySportDetails())
+
+
+@router.message(Command("cancel"), survey_states)
+@router.message(F.text.casefold() == "cancel", survey_states)
 async def cancel_handler(message: Message, state: FSMContext) -> None:
     """
     Allow user to cancel any action
     """
     current_state = await state.get_state()
-    if current_state is None:
-        await message.reply(
-            "Ok. No state to cancel. Start survey: /survey",
-            reply_markup=ReplyKeyboardRemove(),
-        )
-        return
 
     logging.info(f"Cancelling survey on step: {current_state}. Start again: /survey")
     await state.clear()

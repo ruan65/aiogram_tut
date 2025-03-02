@@ -59,14 +59,14 @@ async def handle_user_email_newsletter_unknown(message: Message):
 @router.message(Survey.full_name)
 async def handle_user_full_name_invalid_type(message: Message, state: FSMContext):
     await message.answer(
-        text="Send your name as a text",
+        text="Send your name as a text. /cancel ?",
     )
 
 
 @router.message(Survey.email)
 async def handle_user_invalid_email(message: Message, state: FSMContext):
     await message.answer(
-        text="Invalid email. Cansel survey: /cancel",
+        text="Invalid email. Cansel survey: /cancel ?kk",
     )
 
 
@@ -75,6 +75,11 @@ async def send_survey_results(message: Message, data: dict) -> None:
         "Your survey results:",
         markdown.text("Name:", markdown.hbold(data["full_name"])),
         markdown.text("Email:", markdown.hbold(data["email"])),
+        markdown.text("Preffered sport:", markdown.hbold(data["sport"])),
+        "",
+        markdown.text("Q:", markdown.hitalic(data["sport_question"])),
+        markdown.text("A:", markdown.hitalic(data["sport_details"])),
+        "",
         markdown.text(
             (
                 "Cool, we will send you newsletter"

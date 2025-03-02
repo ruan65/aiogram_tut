@@ -13,7 +13,7 @@ class SurveySportDetails(StatesGroup):
     tennis = State()
     football = State()
     basketball = State()
-    formulaOne = State()
+    formula_one = State()
 
 
 class Sports(StrEnum):
